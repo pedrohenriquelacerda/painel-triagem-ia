@@ -1,0 +1,20 @@
+# Tooling / agentes (não fazem parte do produto)
+.claude/
+.gemini/
+.impeccable/
+.vscode/
+
+# Dependências e build
+node_modules/
+dist/
+build/
+
+# Sistema operacional
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Temporários
+*.log
+_modaltest.html
+*.bak.html

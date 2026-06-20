@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel de Triagem IA — Santa Casa de Porto Alegre</title>
+  <meta name="description" content="Painel de triagem radiológica por IA — fila de exames de crânio (TC/RM) priorizada por criticidade clínica. Protótipo, dados fictícios." />
+  <link rel="icon" href="assets/logo.svg" />
+
+  <!-- Fontes: Montserrat (marca Santa Casa) + IBM Plex Mono (dados técnicos) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind v4 (build no navegador, sem etapa de build local) -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-background: #f5f7fb;
+      --color-foreground: #0f1729;
+      --color-card: #ffffff;
+      --color-border: #e3e8ef;
+      --color-input: #d8dee9;
+      --color-muted: #eef2f7;
+      --color-muted-foreground: #64748b;
+      --color-accent: #e7f0fa;
+      --color-secondary: #eef2f7;
+      --color-santacasa: #004D9D;
+      --color-santacasa-medio: #0071B9;
+      --color-santacasa-escuro: #073772;
+      --color-santacasa-profundo: #062047;
+      --color-santacasa-100: #cfe0f2;
+      --color-crit: #dc2626;
+      --color-crit-bg: #fee2e2;
+      --color-alto: #d97706;
+      --color-alto-bg: #fef3c7;
+      --color-rotina: #15a34a;
+      --color-rotina-bg: #dcfce7;
+      --font-sans: "Montserrat", "Public Sans", system-ui, sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+    }
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- React + Babel (compila o JSX no navegador) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Dados mockados (script comum) -->
+  <script src="src/data.js"></script>
+
+  <!-- App (JSX → Babel). Ordem importa: primitivos → componentes → app. -->
+  <script type="text/babel" data-presets="react" src="src/shared.jsx"></script>
+  <script type="text/babel" data-presets="react" src="src/components/Header.jsx"></script>
+  <script type="text/babel" data-presets="react" src="src/components/Kpis.jsx"></script>
+  <script type="text/babel" data-presets="react" src="src/components/Viewer.jsx"></script>
+  <script type="text/babel" data-presets="react" src="src/components/Queue.jsx"></script>
+  <script type="text/babel" data-presets="react" src="src/components/CasoModal.jsx"></script>
+  <script type="text/babel" data-presets="react" src="src/components/Toasts.jsx"></script>
+  <script type="text/babel" data-presets="react" src="src/app.jsx"></script>
+</body>
+</html>

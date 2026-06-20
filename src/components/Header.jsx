@@ -1,0 +1,41 @@
+;(function () {
+/* Cabeçalho: logotipo Santa Casa, título, status "ao vivo", relógio, simular exame. */
+const { useState, useEffect } = React;
+
+function Header({ onSimulate }) {
+  const { I } = window.T;
+  const [now, setNow] = useState(new Date());
+  useEffect(() => { const t = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(t); }, []);
+
+  return (
+    <header className="border-b border-white/10 bg-gradient-to-r from-santacasa-profundo via-santacasa-profundo to-santacasa-escuro text-white shadow-sm">
+      <div className="mx-auto flex max-w-[1200px] items-center gap-5 px-6 py-3">
+        <div className="flex items-center gap-4">
+          <img src="assets/logo.svg" alt="Santa Casa de Porto Alegre" className="h-10 w-auto" style={{ filter: "brightness(0) invert(1)" }} />
+          <span className="h-9 w-px bg-white/20" />
+          <div className="leading-tight">
+            <div className="flex items-center gap-2">
+              <span className="whitespace-nowrap text-sm font-bold tracking-tight">Triagem IA · Radiologia</span>
+              <span className="flex items-center gap-1 rounded-full bg-rotina/20 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-200">
+                <span className="size-1.5 rounded-full bg-rotina animate-[livedot_1.4s_ease-in-out_infinite]" />ao vivo
+              </span>
+            </div>
+            <div className="mt-0.5 whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.16em] text-white/55">Emergência · TC e RM de Crânio</div>
+          </div>
+        </div>
+        <div className="ml-auto flex items-center gap-4">
+          <div className="hidden text-right font-mono text-xs text-white/70 md:block">
+            <div>{now.toLocaleDateString("pt-BR")}</div>
+            <div className="text-sm font-medium text-white tabular-nums">{now.toLocaleTimeString("pt-BR")}</div>
+          </div>
+          <button onClick={onSimulate} className="flex items-center gap-1.5 whitespace-nowrap rounded-md bg-white px-3 py-2 text-xs font-semibold text-santacasa-profundo shadow-sm transition hover:bg-white/90 hover:shadow active:scale-[.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-santacasa-profundo">
+            {I.bolt}Simular novo exame
+          </button>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+window.T.Header = Header;
+})();
