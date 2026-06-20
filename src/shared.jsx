@@ -27,15 +27,21 @@ const SETOR = {
   ambulatorio: { label: "Ambulatório", maxWait: 10 * 24 * 60,   cls: "bg-muted text-muted-foreground" },
 };
 
-/* Índice de prioridade = faixa por gravidade clínica + componente linear de tempo.
-   Graves 90–130 · intermediários 50–80 · não graves 10–30. O tempo de espera empurra
-   o índice do piso ao teto da faixa conforme se aproxima do SLA do setor (Especificação §5). */
-const PRIORITY_BAND = { critico: [90, 130], alto: [50, 80], rotina: [10, 30] };
+/* Índice de prioridade (0–130). Dois vetores independentes empurram o caso ao topo:
+   • Gravidade clínica define o PISO — um achado grave já entra prioritário (piso 90),
+     mesmo recém-chegado.
+   • Tempo de espera empurra LINEARMENTE o índice do piso até o teto comum (130) conforme
+     se aproxima do SLA do setor — um caso sem gravidade que esperou demais (ex.: 6,5h de 8h
+     na emergência) também sobe ao topo.
+   Assim, a um mesmo % de SLA consumido a gravidade sempre vence; os índices só convergem
+   no limite do prazo (f = 1), quando qualquer caso vira urgência operacional (Especificação §5). */
+const PRIORITY_FLOOR = { critico: 90, alto: 50, rotina: 10 };
+const PRIORITY_CEIL = 130;
 const priorityIndex = (p) => {
-  const [floor, ceil] = PRIORITY_BAND[p.priority] || PRIORITY_BAND.rotina;
+  const floor = PRIORITY_FLOOR[p.priority] || PRIORITY_FLOOR.rotina;
   const cap = (SETOR[p.setor] || SETOR.emergencia).maxWait;
   const f = Math.min(Math.max(p.wait, 0) / cap, 1);
-  return Math.round(floor + f * (ceil - floor));
+  return Math.round(floor + f * (PRIORITY_CEIL - floor));
 };
 
 /* Ordenação da fila: índice de prioridade ↓ → rank do achado → confiança → espera (Especificação §5) */
@@ -69,5 +75,5 @@ const SEV = {
   rotina:  { label: "Rotina",  text: "text-rotina", bg: "bg-rotina-bg", dot: "bg-rotina", hex: "#15a34a", icon: I.check },
 };
 
-Object.assign(window.T, { STATUS, fmtWait, SETOR, PRIORITY_BAND, priorityIndex, W, rk, byClinical, Svg, I, SEV });
+Object.assign(window.T, { STATUS, fmtWait, SETOR, PRIORITY_FLOOR, PRIORITY_CEIL, priorityIndex, W, rk, byClinical, Svg, I, SEV });
 })();

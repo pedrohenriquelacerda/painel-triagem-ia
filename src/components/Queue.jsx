@@ -77,7 +77,7 @@ function Queue({ patients, onOpen, query, setQuery, flashId, filter, setFilter, 
       </div>
       <div className="px-5 py-2.5">
         <p className="text-[11px] leading-relaxed text-muted-foreground">
-          Ordenada pelo <strong className="text-foreground">índice de prioridade</strong> — gravidade clínica do achado somada ao tempo de espera no setor (sobe conforme se aproxima do SLA: 8h emergência · 3d internação · 10d ambulatório). A IA <strong className="text-foreground">assiste</strong> a triagem — o laudo é sempre do radiologista. Abra o caso para ver a região, a confiança e as notas.
+          Ordenada pelo <strong className="text-foreground">índice de prioridade</strong>: a gravidade do achado define o piso (caso grave já entra prioritário) e o tempo de espera empurra o índice ao topo conforme se aproxima do SLA do setor (8h emergência · 3d internação · 10d ambulatório) — então um caso sem gravidade que esperou demais também sobe. A IA <strong className="text-foreground">assiste</strong> a triagem — o laudo é sempre do radiologista. Abra o caso para ver a região, a confiança e as notas.
         </p>
       </div>
       <div className="max-h-[calc(100vh-360px)] overflow-y-auto border-t border-border">

@@ -61,7 +61,7 @@ window.SEED_PATIENTS = [
     id: "EXM-48201", name: "Rita de Cássia Monteiro", age: 55, sex: "F", mrn: "PRT-447120",
     protocol: "Crânio s/ contraste", equipment: "GE Revolution CT — EMERG-02", series: 3, slices: 31,
     finding: "Sem achados agudos", findingDesc: "Sem achados agudos", findingType: "neg",
-    probability: 0.03, priority: "rotina", priorityRank: 9, wait: 4000, setor: "ambulatorio", status: "pendente",
+    probability: 0.03, priority: "rotina", priorityRank: 9, wait: 390, setor: "emergencia", status: "pendente",
     roi: null, sliceFocus: 16, measure: { label: "Linha média", value: "Centrada" },
     aiNotes: "Sem evidência de sangramento, efeito de massa ou hipodensidade aguda. Estruturas da linha média preservadas.",
   },
