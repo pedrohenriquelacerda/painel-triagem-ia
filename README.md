@@ -4,7 +4,7 @@ Protótipo de **painel web de triagem radiológica por IA** para a emergência d
 
 > ⚠️ **Protótipo com dados fictícios.** A IA é ferramenta de **triagem/priorização**, **não de diagnóstico**, e **não substitui o laudo médico**. Pacientes, exames e medidas são mockados.
 
-🔗 **No ar:** _(preencher após ativar o GitHub Pages — ver abaixo)_
+🔗 **No ar:** https://pedrohenriquelacerda.github.io/painel-triagem-ia/ _(ativo após habilitar o GitHub Pages — ver abaixo)_
 
 ---
 
