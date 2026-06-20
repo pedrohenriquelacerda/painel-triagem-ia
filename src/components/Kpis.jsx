@@ -11,7 +11,7 @@ function Kpis({ patients }) {
   ];
   return (
     <div className="border-b border-border bg-card">
-      <div className="mx-auto max-w-[1200px] px-6 py-4">
+      <div className="mx-auto max-w-[1200px] px-4 py-4 sm:px-6">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {cards.map(c => (
             <div key={c.label} className="flex items-center gap-4 rounded-lg border border-border bg-card px-5 py-4 shadow-sm transition hover:shadow">
