@@ -45,7 +45,7 @@ function App() {
     setFilter("pendentes");
     setFlashId(base.id);
     setTimeout(() => setFlashId(null), 2300);
-    pushToast("Novo exame crítico recebido do tomógrafo — confiança da IA 98%. Posicionado no topo da fila.", { kind: "critico", caseId: base.id, ttl: 7000 });
+    pushToast("Novo exame crítico recebido do tomógrafo — confiança da IA 98%. Entrou na fila com índice de prioridade alto, que sobe conforme o tempo de espera.", { kind: "critico", caseId: base.id, ttl: 7000 });
   }, [pushToast]);
 
   const handlePacs = useCallback((p) => {

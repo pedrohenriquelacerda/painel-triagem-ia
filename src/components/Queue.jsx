@@ -4,8 +4,10 @@
 const { useMemo } = React;
 
 function QueueRow({ p, rank, onOpen, flash }) {
-  const { SEV, STATUS, fmtWait, I } = window.T;
+  const { SEV, STATUS, SETOR, fmtWait, priorityIndex, I } = window.T;
   const s = SEV[p.priority];
+  const sec = SETOR[p.setor] || SETOR.emergencia;
+  const idx = priorityIndex(p);
   const showMeasure = p.measure && p.findingType !== "neg";
   return (
     <button onClick={() => onOpen(p.id)}
@@ -26,8 +28,10 @@ function QueueRow({ p, rank, onOpen, flash }) {
           {showMeasure && <><span className="text-border">·</span><span className="whitespace-nowrap font-mono text-muted-foreground">{p.measure.value}</span></>}
         </div>
       </div>
-      <span className={"flex w-[92px] shrink-0 items-center justify-center gap-1.5 rounded-md py-1 text-[11px] font-bold " + s.bg + " " + s.text}>
-        {s.icon}{s.label}
+      <span className={"hidden w-[104px] shrink-0 rounded px-2 py-1 text-center text-[10px] font-semibold sm:block " + sec.cls}>{sec.label}</span>
+      <span className="flex w-[84px] shrink-0 flex-col items-center justify-center leading-none" title={"Índice de prioridade: " + idx}>
+        <span className={"font-mono text-lg font-extrabold tabular-nums " + s.text}>{idx}</span>
+        <span className="mt-0.5 text-[9px] font-semibold uppercase tracking-wide text-muted-foreground">Prioridade</span>
       </span>
       <span className="w-16 text-right font-mono text-[11px] tabular-nums text-muted-foreground">{fmtWait(p.wait)}</span>
       <span className={"w-20 shrink-0 rounded px-2 py-0.5 text-center text-[10px] font-semibold " + STATUS[p.status].cls}>{STATUS[p.status].label}</span>
@@ -73,7 +77,7 @@ function Queue({ patients, onOpen, query, setQuery, flashId, filter, setFilter, 
       </div>
       <div className="px-5 py-2.5">
         <p className="text-[11px] leading-relaxed text-muted-foreground">
-          Ordenada por <strong className="text-foreground">prioridade clínica</strong> e confiança da IA. A IA <strong className="text-foreground">assiste</strong> a triagem — o laudo é sempre do radiologista. Abra o caso para ver a região, a confiança e as notas.
+          Ordenada pelo <strong className="text-foreground">índice de prioridade</strong> — gravidade clínica do achado somada ao tempo de espera no setor (sobe conforme se aproxima do SLA: 8h emergência · 3d internação · 10d ambulatório). A IA <strong className="text-foreground">assiste</strong> a triagem — o laudo é sempre do radiologista. Abra o caso para ver a região, a confiança e as notas.
         </p>
       </div>
       <div className="max-h-[calc(100vh-360px)] overflow-y-auto border-t border-border">

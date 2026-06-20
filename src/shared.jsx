@@ -11,13 +11,37 @@ const STATUS = {
   laudado:  { label: "Laudado",  cls: "bg-rotina-bg text-rotina" },
 };
 
-/* Tempo de espera legível */
-const fmtWait = (m) => m < 60 ? `${m} min` : `${Math.floor(m / 60)}h${(m % 60).toString().padStart(2, "0")}`;
+/* Tempo de espera legível (min → horas → dias) */
+const fmtWait = (m) => {
+  if (m < 60) return `${m} min`;
+  if (m < 1440) return `${Math.floor(m / 60)}h${(m % 60).toString().padStart(2, "0")}`;
+  const d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60);
+  return h ? `${d}d ${h}h` : `${d}d`;
+};
 
-/* Ordenação da fila: nível clínico → rank do achado → confiança → espera (Especificação §5) */
+/* Setor de origem do paciente → define o tempo-alvo (SLA) usado no índice de prioridade.
+   maxWait em minutos: emergência 8h · internação 3d · ambulatório 10d. */
+const SETOR = {
+  emergencia:  { label: "Emergência",  maxWait: 8 * 60,         cls: "bg-santacasa/10 text-santacasa-escuro" },
+  internacao:  { label: "Internação",  maxWait: 3 * 24 * 60,    cls: "bg-secondary text-foreground/70" },
+  ambulatorio: { label: "Ambulatório", maxWait: 10 * 24 * 60,   cls: "bg-muted text-muted-foreground" },
+};
+
+/* Índice de prioridade = faixa por gravidade clínica + componente linear de tempo.
+   Graves 90–130 · intermediários 50–80 · não graves 10–30. O tempo de espera empurra
+   o índice do piso ao teto da faixa conforme se aproxima do SLA do setor (Especificação §5). */
+const PRIORITY_BAND = { critico: [90, 130], alto: [50, 80], rotina: [10, 30] };
+const priorityIndex = (p) => {
+  const [floor, ceil] = PRIORITY_BAND[p.priority] || PRIORITY_BAND.rotina;
+  const cap = (SETOR[p.setor] || SETOR.emergencia).maxWait;
+  const f = Math.min(Math.max(p.wait, 0) / cap, 1);
+  return Math.round(floor + f * (ceil - floor));
+};
+
+/* Ordenação da fila: índice de prioridade ↓ → rank do achado → confiança → espera (Especificação §5) */
 const W = { critico: 0, alto: 1, rotina: 2 };
 const rk = (p) => p.priorityRank || 99;
-const byClinical = (a, b) => W[a.priority] - W[b.priority] || rk(a) - rk(b) || b.probability - a.probability || b.wait - a.wait;
+const byClinical = (a, b) => priorityIndex(b) - priorityIndex(a) || rk(a) - rk(b) || b.probability - a.probability || b.wait - a.wait;
 
 /* Ícones SVG (stroke = currentColor, herdam a cor do contexto) */
 const Svg = ({ children, className = "size-4", w = 2 }) => (
@@ -45,5 +69,5 @@ const SEV = {
   rotina:  { label: "Rotina",  text: "text-rotina", bg: "bg-rotina-bg", dot: "bg-rotina", hex: "#15a34a", icon: I.check },
 };
 
-Object.assign(window.T, { STATUS, fmtWait, W, rk, byClinical, Svg, I, SEV });
+Object.assign(window.T, { STATUS, fmtWait, SETOR, PRIORITY_BAND, priorityIndex, W, rk, byClinical, Svg, I, SEV });
 })();

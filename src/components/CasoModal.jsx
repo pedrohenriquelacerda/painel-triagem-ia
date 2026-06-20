@@ -10,8 +10,10 @@ function CasoModal({ p, onClose, onPacs }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
   if (!p) return null;
-  const { SEV, STATUS, I, Viewer } = window.T;
+  const { SEV, STATUS, SETOR, priorityIndex, I, Viewer } = window.T;
   const s = SEV[p.priority];
+  const sec = SETOR[p.setor] || SETOR.emergencia;
+  const idx = priorityIndex(p);
   const isNeg = p.findingType === "neg";
   const done = p.status === "laudado";
   return (
@@ -25,6 +27,8 @@ function CasoModal({ p, onClose, onPacs }) {
               <span className="font-mono text-xs text-muted-foreground">{p.id}</span>
               <span className={"rounded px-2 py-0.5 text-[10px] font-semibold " + STATUS[p.status].cls}>{STATUS[p.status].label}</span>
               <span className={"flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide " + s.bg + " " + s.text}>{s.icon}{s.label}</span>
+              <span className={"rounded px-2 py-0.5 text-[10px] font-semibold " + sec.cls}>{sec.label}</span>
+              <span className={"flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-bold " + s.bg + " " + s.text}>Índice <span className="font-mono tabular-nums">{idx}</span></span>
             </div>
             <h2 className="mt-1 truncate text-xl font-bold tracking-tight text-santacasa-profundo">{p.name}</h2>
             <div className="mt-0.5 text-xs text-muted-foreground">{p.age} anos · {p.sex === "F" ? "Feminino" : "Masculino"} · Prontuário <span className="font-mono">{p.mrn}</span></div>
@@ -47,6 +51,8 @@ function CasoModal({ p, onClose, onPacs }) {
               <span className="text-muted-foreground">{p.measure.label}: <span className="font-mono font-semibold text-foreground">{p.measure.value}</span></span>
               <span className="text-muted-foreground">Corte de referência: <span className="font-mono font-semibold text-foreground">{p.sliceFocus}/{p.slices}</span></span>
               {p.priorityRank <= 5 && <span className="text-muted-foreground">Prioridade clínica: <span className={"font-semibold " + s.text}>Nº{p.priorityRank} de 5</span></span>}
+              <span className="text-muted-foreground">Setor: <span className="font-semibold text-foreground">{sec.label}</span></span>
+              <span className="text-muted-foreground">Índice de prioridade: <span className={"font-mono font-semibold " + s.text}>{idx}</span></span>
             </div>
             <p className="mt-2 border-t border-border/60 pt-2 text-xs leading-relaxed text-foreground/80">{p.aiNotes}</p>
           </div>
