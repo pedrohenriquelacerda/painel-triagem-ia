@@ -17,13 +17,10 @@ function Viewer({ p }) {
   const s = SEV[p.priority];
   // Mapa de calor estilo "jet": vermelho quente no núcleo → laranja → amarelo
   // → verde → azul frio na borda (como mapa de ativação/saliência da IA)
-  const spread = 2.4;
   const heat = p.roi && {
-    left: p.roi.left - p.roi.w * (spread - 1) / 2,
-    top: p.roi.top - p.roi.h * (spread - 1) / 2,
-    w: p.roi.w * spread,
-    h: p.roi.h * spread,
     cx: p.roi.left + p.roi.w / 2,
+    cy: p.roi.top + p.roi.h / 2,
+    d: Math.max(p.roi.w, p.roi.h) * 2.4, // diâmetro (% da largura) → círculo via aspect-ratio
   };
   const heatGradient = "radial-gradient(circle, rgba(255,255,255,.95) 0%, rgba(255,45,45,.95) 13%, rgba(255,130,25,.9) 28%, rgba(255,224,45,.84) 44%, rgba(70,221,96,.74) 60%, rgba(45,150,255,.56) 77%, rgba(35,90,230,0) 92%)";
   return (
@@ -36,11 +33,11 @@ function Viewer({ p }) {
         </div>
         {p.roi && onFocus && (
           <>
-            {/* Mapa de calor da ativação da IA (substitui o retângulo) */}
-            <div className={"pointer-events-none absolute " + (p.priority === "critico" ? "animate-[heatpulse_1.9s_ease-in-out_infinite]" : "")}
-              style={{ top: heat.top + "%", left: heat.left + "%", width: heat.w + "%", height: heat.h + "%", background: heatGradient, filter: "blur(4px)", mixBlendMode: "screen" }} />
+            {/* Mapa de calor circular da ativação da IA (substitui o retângulo) */}
+            <div className={"pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full " + (p.priority === "critico" ? "animate-[heatpulse_1.9s_ease-in-out_infinite]" : "")}
+              style={{ top: heat.cy + "%", left: heat.cx + "%", width: heat.d + "%", aspectRatio: "1 / 1", background: heatGradient, filter: "blur(4px)", mixBlendMode: "screen" }} />
             <span className="pointer-events-none absolute -translate-x-1/2 -translate-y-full whitespace-nowrap rounded px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-white shadow-[0_0_0_1px_rgba(0,0,0,.4)]"
-              style={{ left: heat.cx + "%", top: (heat.top - 1) + "%", background: s.hex }}>{p.roi.label}</span>
+              style={{ left: heat.cx + "%", top: (p.roi.top - 1) + "%", background: s.hex }}>{p.roi.label}</span>
           </>
         )}
         <div className="pointer-events-none absolute inset-0 p-4 font-mono text-[10px] text-white/70">
