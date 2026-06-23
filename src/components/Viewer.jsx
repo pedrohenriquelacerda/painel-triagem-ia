@@ -20,7 +20,7 @@ function Viewer({ p }) {
   const heat = p.roi && {
     cx: p.roi.left + p.roi.w / 2,
     cy: p.roi.top + p.roi.h / 2,
-    d: Math.max(p.roi.w, p.roi.h) * 2.4, // diâmetro (% da largura) → círculo via aspect-ratio
+    d: Math.max(p.roi.w, p.roi.h) * 1.1, // diâmetro (% da largura) → círculo via aspect-ratio
   };
   const heatGradient = "radial-gradient(circle, rgba(255,255,255,.95) 0%, rgba(255,45,45,.95) 13%, rgba(255,130,25,.9) 28%, rgba(255,224,45,.84) 44%, rgba(70,221,96,.74) 60%, rgba(45,150,255,.56) 77%, rgba(35,90,230,0) 92%)";
   return (
