@@ -10,7 +10,7 @@ function Kpis({ patients }) {
     { label: "Tempo médio até triagem", value: "38s", sub: "Aquisição → fila", val: "text-rotina", icon: I.clock, iconBg: "bg-rotina-bg text-rotina" },
   ];
   return (
-    <div className="border-b border-border bg-card">
+    <div className="shrink-0 border-b border-border bg-card">
       <div className="mx-auto max-w-[1200px] px-4 py-4 sm:px-6">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {cards.map(c => (

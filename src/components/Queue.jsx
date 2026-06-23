@@ -59,7 +59,7 @@ function Queue({ patients, onOpen, query, setQuery, flashId, filter, setFilter, 
     { k: "todos", label: "Todos" },
   ];
   return (
-    <section className="rounded-xl border border-border bg-card shadow-sm">
+    <section className="flex h-full min-h-0 flex-col rounded-xl border border-border bg-card shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
         <div className="relative flex items-center gap-2.5">
           <span className="size-2.5 rounded-full bg-santacasa" />
@@ -105,7 +105,7 @@ function Queue({ patients, onOpen, query, setQuery, flashId, filter, setFilter, 
           );
         })}
       </div>
-      <div className="flex flex-col gap-3 border-t border-border p-3 sm:block sm:gap-0 sm:p-0 sm:max-h-[calc(100vh-360px)] sm:overflow-y-auto">
+      <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto border-t border-border p-3 sm:block sm:gap-0 sm:p-0">
         {sorted.map((p, i) => <QueueRow key={p.id} p={p} rank={i + 1} onOpen={onOpen} flash={p.id === flashId} />)}
         {!sorted.length && <div className="px-5 py-16 text-center text-sm text-muted-foreground">Nenhum caso nesta visão.</div>}
       </div>

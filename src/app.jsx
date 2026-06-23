@@ -55,13 +55,13 @@ function App() {
   }, [pushToast]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="flex h-screen flex-col overflow-hidden bg-background text-foreground">
       <Header onSimulate={handleSimulate} />
       <Kpis patients={patients} />
-      <main className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6">
+      <main className="mx-auto flex w-full max-w-[1200px] min-h-0 flex-1 flex-col px-4 py-4 sm:px-6 sm:py-6">
         <Queue patients={view} onOpen={setOpenId} query={query} setQuery={setQuery} flashId={flashId} filter={filter} setFilter={setFilter} counts={counts} />
       </main>
-      <footer className="border-t border-border bg-card">
+      <footer className="shrink-0 border-t border-border bg-card">
         <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-4 px-4 py-3 text-xs text-muted-foreground sm:px-6">
           <span><strong className="text-santacasa-escuro">Aviso clínico:</strong> ferramenta de triagem e priorização. Não substitui o laudo médico.</span>
           <span className="font-mono">Modelo: NeuroCT-Triage v2.3</span>
