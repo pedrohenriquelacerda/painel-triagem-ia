@@ -20,9 +20,10 @@ function Viewer({ p }) {
   const heat = p.roi && {
     cx: p.roi.left + p.roi.w / 2,
     cy: p.roi.top + p.roi.h / 2,
-    d: Math.max(p.roi.w, p.roi.h) * 1.1, // diâmetro (% da largura) → círculo via aspect-ratio
+    d: Math.max(p.roi.w, p.roi.h) * 1.5, // diâmetro (% da largura) → círculo via aspect-ratio
   };
-  const heatGradient = "radial-gradient(circle, rgba(255,255,255,.95) 0%, rgba(255,45,45,.95) 13%, rgba(255,130,25,.9) 28%, rgba(255,224,45,.84) 44%, rgba(70,221,96,.74) 60%, rgba(45,150,255,.56) 77%, rgba(35,90,230,0) 92%)";
+  // Núcleo quente opaco; rumo ao azul fica mais transparente e mais disperso (halo frio que se dissolve)
+  const heatGradient = "radial-gradient(circle, rgba(255,255,255,.95) 0%, rgba(255,45,45,.9) 11%, rgba(255,130,25,.78) 24%, rgba(255,224,45,.58) 40%, rgba(70,221,96,.36) 58%, rgba(45,150,255,.18) 78%, rgba(35,90,230,0) 100%)";
   return (
     <div className="overflow-hidden rounded-lg border border-border">
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#05070d]">
@@ -35,7 +36,7 @@ function Viewer({ p }) {
           <>
             {/* Mapa de calor circular da ativação da IA (substitui o retângulo) */}
             <div className={"pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full " + (p.priority === "critico" ? "animate-[heatpulse_1.9s_ease-in-out_infinite]" : "")}
-              style={{ top: heat.cy + "%", left: heat.cx + "%", width: heat.d + "%", aspectRatio: "1 / 1", background: heatGradient, filter: "blur(4px)", mixBlendMode: "screen" }} />
+              style={{ top: heat.cy + "%", left: heat.cx + "%", width: heat.d + "%", aspectRatio: "1 / 1", background: heatGradient, filter: "blur(7px)", mixBlendMode: "screen" }} />
             <span className="pointer-events-none absolute -translate-x-1/2 -translate-y-full whitespace-nowrap rounded px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-white shadow-[0_0_0_1px_rgba(0,0,0,.4)]"
               style={{ left: heat.cx + "%", top: (p.roi.top - 1) + "%", background: s.hex }}>{p.roi.label}</span>
           </>
