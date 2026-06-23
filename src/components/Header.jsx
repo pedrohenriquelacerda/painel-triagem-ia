@@ -11,7 +11,7 @@ function Header({ onSimulate }) {
     <header className="border-b border-white/10 bg-gradient-to-r from-santacasa-profundo via-santacasa-profundo to-santacasa-escuro text-white shadow-sm">
       <div className="mx-auto flex max-w-[1200px] items-center gap-3 px-4 py-3 sm:gap-5 sm:px-6">
         <div className="flex min-w-0 items-center gap-3 sm:gap-4">
-          <img src="assets/logo.svg" alt="Santa Casa de Porto Alegre" className="h-8 w-auto shrink-0 sm:h-10" style={{ filter: "brightness(0) invert(1)" }} />
+          <img src="assets/exintime.png" alt="EXinTime" className="h-9 w-auto shrink-0 rounded-md bg-white p-1 shadow-sm ring-1 ring-white/30 sm:h-11" />
           <span className="hidden h-9 w-px bg-white/20 sm:block" />
           <div className="min-w-0 leading-tight">
             <div className="flex items-center gap-2">
