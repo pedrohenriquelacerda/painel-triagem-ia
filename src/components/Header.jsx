@@ -11,7 +11,7 @@ function Header({ onSimulate }) {
     <header className="border-b border-white/10 bg-gradient-to-r from-santacasa-profundo via-santacasa-profundo to-santacasa-escuro text-white shadow-sm">
       <div className="mx-auto flex max-w-[1200px] items-center gap-3 px-4 py-3 sm:gap-5 sm:px-6">
         <div className="flex min-w-0 items-center gap-3 sm:gap-4">
-          <img src="assets/exintime.png" alt="EXinTime" className="h-9 w-auto shrink-0 sm:h-11" style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,.45))" }} />
+          <img src="assets/exintime.png" alt="EXinTime" className="h-9 w-auto shrink-0 sm:h-11" style={{ filter: "brightness(1.55) saturate(1.15) drop-shadow(0 1px 2px rgba(0,0,0,.5))" }} />
           <span className="hidden h-9 w-px bg-white/20 sm:block" />
           <div className="min-w-0 leading-tight">
             <div className="flex items-center gap-2">
