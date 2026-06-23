@@ -3,12 +3,28 @@
    controle de corte e atalho para o corte de referência. Cor da ROI = severidade. */
 const { useState, useEffect } = React;
 
+/* hex (#rrggbb) → rgba(...) com alfa, para montar o gradiente do mapa de calor */
+const rgba = (hex, a) => {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`;
+};
+
 function Viewer({ p }) {
   const { SEV } = window.T;
   const [slice, setSlice] = useState(p.sliceFocus);
   useEffect(() => { setSlice(p.sliceFocus); }, [p.id]);
   const onFocus = slice === p.sliceFocus;
   const s = SEV[p.priority];
+  // Mapa de calor: área maior e suave centrada na ROI (em vez do retângulo)
+  const spread = 2.1;
+  const heat = p.roi && {
+    left: p.roi.left - p.roi.w * (spread - 1) / 2,
+    top: p.roi.top - p.roi.h * (spread - 1) / 2,
+    w: p.roi.w * spread,
+    h: p.roi.h * spread,
+    cx: p.roi.left + p.roi.w / 2,
+  };
+  const heatGradient = `radial-gradient(ellipse at center, rgba(255,255,255,.92) 0%, rgba(255,236,140,.85) 18%, ${rgba(s.hex, .95)} 40%, ${rgba(s.hex, .45)} 62%, ${rgba(s.hex, 0)} 80%)`;
   return (
     <div className="overflow-hidden rounded-lg border border-border">
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#05070d]">
@@ -18,10 +34,13 @@ function Viewer({ p }) {
             style={{ background: "radial-gradient(circle, rgba(120,135,160,.18) 0%, rgba(60,68,86,.35) 60%, rgba(20,24,32,.55) 100%)", boxShadow: "inset 0 0 60px rgba(0,0,0,.6)" }} />
         </div>
         {p.roi && onFocus && (
-          <div className={"absolute rounded-sm border-2 " + (p.priority === "critico" ? "animate-[critpulse_1.8s_ease-in-out_infinite]" : "")}
-            style={{ top: p.roi.top + "%", left: p.roi.left + "%", width: p.roi.w + "%", height: p.roi.h + "%", borderColor: s.hex, boxShadow: "0 0 0 2px rgba(0,0,0,0.5)" }}>
-            <span className="absolute -top-6 left-0 whitespace-nowrap rounded px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-white" style={{ background: s.hex }}>{p.roi.label}</span>
-          </div>
+          <>
+            {/* Mapa de calor da ativação da IA (substitui o retângulo) */}
+            <div className={"pointer-events-none absolute " + (p.priority === "critico" ? "animate-[heatpulse_1.9s_ease-in-out_infinite]" : "")}
+              style={{ top: heat.top + "%", left: heat.left + "%", width: heat.w + "%", height: heat.h + "%", background: heatGradient, filter: "blur(7px)", mixBlendMode: "screen" }} />
+            <span className="pointer-events-none absolute -translate-x-1/2 -translate-y-full whitespace-nowrap rounded px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-white shadow-[0_0_0_1px_rgba(0,0,0,.4)]"
+              style={{ left: heat.cx + "%", top: (heat.top - 1) + "%", background: s.hex }}>{p.roi.label}</span>
+          </>
         )}
         <div className="pointer-events-none absolute inset-0 p-4 font-mono text-[10px] text-white/70">
           <div className="flex justify-between">
