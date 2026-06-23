@@ -15,8 +15,9 @@ function Viewer({ p }) {
   useEffect(() => { setSlice(p.sliceFocus); }, [p.id]);
   const onFocus = slice === p.sliceFocus;
   const s = SEV[p.priority];
-  // Mapa de calor: área maior e suave centrada na ROI (em vez do retângulo)
-  const spread = 2.1;
+  // Mapa de calor estilo "jet": vermelho quente no núcleo → laranja → amarelo
+  // → verde → azul frio na borda (como mapa de ativação/saliência da IA)
+  const spread = 2.4;
   const heat = p.roi && {
     left: p.roi.left - p.roi.w * (spread - 1) / 2,
     top: p.roi.top - p.roi.h * (spread - 1) / 2,
@@ -24,7 +25,7 @@ function Viewer({ p }) {
     h: p.roi.h * spread,
     cx: p.roi.left + p.roi.w / 2,
   };
-  const heatGradient = `radial-gradient(ellipse at center, rgba(255,255,255,.92) 0%, rgba(255,236,140,.85) 18%, ${rgba(s.hex, .95)} 40%, ${rgba(s.hex, .45)} 62%, ${rgba(s.hex, 0)} 80%)`;
+  const heatGradient = "radial-gradient(circle, rgba(255,255,255,.95) 0%, rgba(255,45,45,.95) 13%, rgba(255,130,25,.9) 28%, rgba(255,224,45,.84) 44%, rgba(70,221,96,.74) 60%, rgba(45,150,255,.56) 77%, rgba(35,90,230,0) 92%)";
   return (
     <div className="overflow-hidden rounded-lg border border-border">
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#05070d]">
@@ -37,7 +38,7 @@ function Viewer({ p }) {
           <>
             {/* Mapa de calor da ativação da IA (substitui o retângulo) */}
             <div className={"pointer-events-none absolute " + (p.priority === "critico" ? "animate-[heatpulse_1.9s_ease-in-out_infinite]" : "")}
-              style={{ top: heat.top + "%", left: heat.left + "%", width: heat.w + "%", height: heat.h + "%", background: heatGradient, filter: "blur(7px)", mixBlendMode: "screen" }} />
+              style={{ top: heat.top + "%", left: heat.left + "%", width: heat.w + "%", height: heat.h + "%", background: heatGradient, filter: "blur(4px)", mixBlendMode: "screen" }} />
             <span className="pointer-events-none absolute -translate-x-1/2 -translate-y-full whitespace-nowrap rounded px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-white shadow-[0_0_0_1px_rgba(0,0,0,.4)]"
               style={{ left: heat.cx + "%", top: (heat.top - 1) + "%", background: s.hex }}>{p.roi.label}</span>
           </>
